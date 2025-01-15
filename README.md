@@ -34,6 +34,11 @@ Aby rozpocząć pracę z projektem sprzątando, wykonaj następujące kroki (zal
     python manage.py runserver
     ```
 
+5. (opcjonalne) Dodaj konto admina:
+    ```sh
+    python manage.py createsuperuser
+    ```
+
 ## Użytkowanie
 
 - **Klienci**: Utwórz konto, zaloguj się i utwórz oferty na potrzebne usługi.
