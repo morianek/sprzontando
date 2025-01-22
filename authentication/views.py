@@ -6,10 +6,10 @@ def login(request):
     if request.method == 'POST':
         print(request.POST)
         return HttpResponse('Login')
-    return render(request, 'auth/login.html')
+    return render(request, 'authentication/login.html')
 
 def register(request):
     if request.method == 'POST':
         print(request.POST)
         return HttpResponse('Register')
-    return render(request, 'auth/register.html')
+    return render(request, 'authentication/register.html')
