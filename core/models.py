@@ -35,6 +35,14 @@ class Offer(models.Model):
             raise ValidationError({'Price': 'Cena musi być większa od zera.'})
         if self.ExpiryDate <= timezone.now():
             raise ValidationError({'ExpiryDate': 'Data wygaśnięcia musi być w przyszłości.'})
+        if not self.Title:
+            raise ValidationError({'Title': 'Tytuł nie może być pusty.'})
+        if len(self.Title) > 128:
+            raise ValidationError({'Title': 'Tytuł nie może przekraczać 128 znaków.'})
+        if not self.Location:
+            raise ValidationError({'Location': 'Lokalizacja nie może być pusta.'})
+        if len(self.Location) > 256:
+            raise ValidationError({'Location': 'Lokalizacja nie może przekraczać 256 znaków.'})
 
     def save(self, *args, **kwargs):
         self.clean()
