@@ -47,3 +47,13 @@ Aby rozpocząć pracę z projektem sprzątando, wykonaj następujące kroki (zal
 ## Wkład
 
 Aby przyczynić się do projektu sklonuj repozytorium i utwórz nowy branch. Następnie zatwierdź zmiany i zapisz je w repozytorium. Na koniec utwórz nowego Pull Requesta.
+
+## produkcja
+utwórz plik .env
+w którym umieść:
+```  
+MODE=production
+SECRET_KEY=twojsekretnyklucz
+DEBUG=False
+ALLOWED_HOSTS=strona.com,drugastrona.com
+```
