@@ -2,7 +2,7 @@ from django.contrib import admin
 from .models import Offer
 
 class OfferAdmin(admin.ModelAdmin):
-    list_display = ('Title', 'Description', 'Owner')
+    list_display = ('Title', 'Description', 'Owner', 'TimeCreated')
     search_fields = ('Title', 'Description')
     list_filter = ('Owner',)
 
