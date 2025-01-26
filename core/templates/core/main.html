@@ -9,5 +9,20 @@
 {% endblock %}
 
 {% block content %}
-<h2 class="text-center">Main App</h2>
+<div class="container mt-5">
+    <h2 class="text-center">Oferty:</h2>
+    {% for offer in offers %}
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ offer.Title }}</h5>
+                        <p class="card-text">{{ offer.Description }}</p>
+                        <p class="card-text"><strong>Price:</strong> {{ offer.Price }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
 {% endblock %}

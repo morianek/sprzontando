@@ -1,6 +1,9 @@
 from django.shortcuts import render
 
+from .models import Offer
+
 # Create your views here.
 
 def main(request):
-    return render(request, 'core/main.html')
+    offers = Offer.objects.all()
+    return render(request, 'core/main.html', {'offers': offers})
