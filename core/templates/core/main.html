@@ -37,7 +37,7 @@
                         <div class="form-group">
                             <label for="state">Województwo</label>
                             <select class="form-control" id="state" name="state">
-                                <option value="">Wybierz województwo</option>
+                                <option value="">Wszystkie</option>
                                 {% for state in state_choices %}
                                     <option value="{{ state.0 }}" {% if request.GET.state == state.0 %}selected{% endif %}>{{ state.1 }}</option>
                                 {% endfor %}
