@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+from django.core.validators import EmailValidator, ValidationError
 
 from .models import CustomUser
 
@@ -51,6 +52,13 @@ def user_settings(request):
 
         if CustomUser.objects.filter(email=email).exclude(pk=request.user.pk).exists():
             messages.error(request, 'Email jest już zajęty')
+            return redirect('user_settings')
+
+        email_validator = EmailValidator()
+        try:
+            email_validator(email)
+        except ValidationError:
+            messages.error(request, 'Nieprawidłowy format adresu email')
             return redirect('user_settings')
 
         try:
