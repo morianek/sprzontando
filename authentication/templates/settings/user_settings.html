@@ -17,6 +17,7 @@
         <div class="col-md-9">
             <div class="settings-content">
                 <form method="post" action="">
+                    {% csrf_token %}
                     <div class="mb-3">
                         <label for="username" class="form-label">Nazwa Użytkownika</label>
                         <input type="text" class="form-control" id="username" name="username" value="{{ user.username }}">
