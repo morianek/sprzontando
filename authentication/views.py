@@ -1,6 +1,7 @@
-from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.hashers import make_password
+from django.shortcuts import render, redirect
 from django.core.validators import EmailValidator, ValidationError
 
 from .models import CustomUser
@@ -11,14 +12,20 @@ def login_view(request):
         return redirect('main')
 
     if request.method == 'POST':
-        email = request.POST['email']
-        password = request.POST['password']
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        if not email or not password:
+            messages.error(request, 'Email i hasło są wymagane')
+            return redirect('login')
+
         user = authenticate(request, email=email, password=password)
         if user is not None:
             login(request, user)
             return redirect('main')
         else:
             messages.error(request, 'Email lub hasło są nieprawidłowe')
+            return redirect('login')
+
     return render(request, 'authentication/login.html')
 
 def register_view(request):
@@ -26,13 +33,48 @@ def register_view(request):
         return redirect('main')
 
     if request.method == 'POST':
-        print(request.POST)
-        return redirect('main')
+        email = request.POST.get('email')
+        name = request.POST.get('name')
+        password = request.POST.get('password')
+        confirm_password = request.POST.get('password2')
+
+        if CustomUser.objects.filter(email=email).exists():
+            messages.error(request, 'Email jest już zajęty')
+            return redirect('register')
+
+        if CustomUser.objects.filter(username=name).exists():
+            messages.error(request, 'Nazwa użytkownika jest już zajęta')
+            return redirect('register')
+
+        if password != confirm_password:
+            messages.error(request, 'Hasła nie są takie same')
+            return redirect('register')
+
+        email_validator = EmailValidator()
+        try:
+            email_validator(email)
+        except ValidationError:
+            messages.error(request, 'Nieprawidłowy format adresu email')
+            return redirect('register')
+
+        try:
+            user = CustomUser.objects.create(
+                email=email,
+                username=name,
+                password=make_password(password)
+            )
+            user.save()
+            messages.success(request, 'Pomyślnie zarejestrowano użytkownika')
+            return redirect('login')
+        except Exception as e:
+            messages.error(request, f'Wystąpił błąd: {e}')
+            return redirect('register')
+
     return render(request, 'authentication/register.html')
 
 def log_out(request):
     logout(request)
-    return redirect('main')
+    return redirect('login')
 
 def user_settings(request):
     if not request.user.is_authenticated:
