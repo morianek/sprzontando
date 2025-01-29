@@ -9,22 +9,63 @@
 {% endblock %}
 
 {% block content %}
+
 <div class="container mt-5">
-    <h2 class="text-center">Oferty:</h2>
-    {% for offer in offers %}
-        <div class="row mb-4">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ offer.Title }}</h5>
-                        <p class="card-text">{{ offer.Description }}</p>
-                        <p class="card-text"><strong>Cena:</strong> {{ offer.Price }} PLN</p>
-                        <p class="card-text"><strong>Lokalizacja:</strong> {{ offer.Location }}</p>
-                        <p class="card-text"><strong>Typ:</strong> {{ offer.get_Type_display }}</p>
-                    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card sidebar-card">
+                <div class="card-body">
+                    <h5 class="card-title">Filtry</h5>
+                    <form method="GET" action="{% url 'main' %}">
+                        <div class="form-group">
+                            <label for="type">Typ</label>
+                            <select class="form-control" id="type" name="type">
+                                <option value="">Wszystkie</option>
+                                {% for type in type_choices %}
+                                    <option value="{{ type.0 }}">{{ type.1 }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="price_min">Minimalna Cena</label>
+                            <input type="number" class="form-control" id="price_min" name="price_min" placeholder="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="price_max">Maksymalna Cena</label>
+                            <input type="number" class="form-control" id="price_max" name="price_max" placeholder="1000">
+                        </div>
+                        <div class="form-group">
+                            <label for="location">Lokalizacja</label>
+                            <select class="form-control" id="location" name="location">
+                                <option value="">Wybierz lokalizację</option>
+                                {% for state in state_choices %}
+                                    <option value="{{ state.0 }}">{{ state.1 }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Zatwierdź filtry</button>
+                    </form>
                 </div>
             </div>
         </div>
-    {% endfor %}
+        <div class="col-md-9">
+            <h2 class="text-center mb-4">Oferty:</h2>
+            <div class="row">
+                {% for offer in offers %}
+                    <div class="col-md-6 mb-4">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ offer.Title }}</h5>
+                                <p class="card-text">{{ offer.Description }}</p>
+                                <p class="card-text"><strong>Cena:</strong> {{ offer.Price }} PLN</p>
+                                <p class="card-text"><strong>Lokalizacja:</strong> {{ offer.Location }}</p>
+                                <p class="card-text"><strong>Typ:</strong> {{ offer.get_Type_display }}</p>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}
