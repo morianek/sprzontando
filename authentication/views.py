@@ -40,8 +40,17 @@ def user_settings(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         email = request.POST.get('email')
+
         if username == request.user.username and email == request.user.email:
             messages.info(request, 'Nie dokonano żadnych zmian')
+            return redirect('user_settings')
+
+        if CustomUser.objects.filter(username=username).exclude(pk=request.user.pk).exists():
+            messages.error(request, 'Nazwa użytkownika jest już zajęta')
+            return redirect('user_settings')
+
+        if CustomUser.objects.filter(email=email).exclude(pk=request.user.pk).exists():
+            messages.error(request, 'Email jest już zajęty')
             return redirect('user_settings')
 
         try:
