@@ -3,21 +3,10 @@ from authentication.models import CustomUser
 from django.core.exceptions import ValidationError
 from django.utils import timezone
 
+from .choices import TYPE_CHOICES, STATUS_CHOICES, STATE_CHOICES
+
 # Create your models here.
 class Offer(models.Model):
-    TYPE_CHOICES = [
-        ('auto', 'Samochód'),
-        ('house', 'Cały dom'),
-        ('vacuum', 'odkurzanie'),
-        ('sweep_mop', 'Zamiatanie i mycie podłóg'),
-        ('other', 'Inne'),
-    ]
-
-    STATUS_CHOICES = [
-        ('blocked', 'Zablokwane'),
-        ('active', 'Aktywne'),
-        ('closed', 'Zakończone'),
-    ]
 
     Title = models.CharField(max_length=128)
     Description = models.TextField(blank=True)
@@ -28,6 +17,7 @@ class Offer(models.Model):
     ExpiryDate = models.DateTimeField()
     Status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='active')
     Location = models.CharField(max_length=256)
+    State = models.CharField(max_length=20, choices=STATE_CHOICES)
 
     def clean(self):
         super().clean()
@@ -43,6 +33,12 @@ class Offer(models.Model):
             raise ValidationError({'Location': 'Lokalizacja nie może być pusta.'})
         if len(self.Location) > 256:
             raise ValidationError({'Location': 'Lokalizacja nie może przekraczać 256 znaków.'})
+        if self.Type not in dict(TYPE_CHOICES):
+            raise ValidationError({'Type': 'Nieprawidłowy typ.'})
+        if self.Status not in dict(STATUS_CHOICES):
+            raise ValidationError({'Status': 'Nieprawidłowy status.'})
+        if self.State not in dict(STATE_CHOICES):
+            raise ValidationError({'State': 'Nieprawidłowy stan.'})
 
     def save(self, *args, **kwargs):
         self.clean()
