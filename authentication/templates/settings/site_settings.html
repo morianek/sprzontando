@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Login{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'authentication/css/styles.css' %}">
+    <script src="{% static 'authentication/js/scripts.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center">Ustawienia Strony</h1>
+    <div class="row">
+        {% include 'settings/settings_sidebar.html' %}
+
+        <div class="col-md-9">
+            <div class="settings-content">
+                <h3>ustawienia apki</h3>
+                <p>tutaj są jakieś ustawienia idk</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

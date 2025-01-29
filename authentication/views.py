@@ -30,3 +30,15 @@ def register_view(request):
 def log_out(request):
     logout(request)
     return redirect('main')
+
+def user_settings(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+
+    return render(request, 'settings/user_settings.html')
+
+def site_settings(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+
+    return render(request, 'settings/site_settings.html')
