@@ -42,3 +42,9 @@ def site_settings(request):
         return redirect('login')
 
     return render(request, 'settings/site_settings.html')
+
+def change_password(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+
+    return render(request, 'settings/change_password.html')

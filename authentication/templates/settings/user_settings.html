@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Login{% endblock %}
+{% block title %}Ustawienia{% endblock %}
 
 {% block head %}
     <link rel="stylesheet" href="{% static 'authentication/css/styles.css' %}">
@@ -10,14 +10,24 @@
 
 {% block content %}
 <div class="container mt-5">
-    <h1 class="text-center">Ustawienia Użytkownika</h1>
+    <h3 class="text-center">Ustawienia Użytkownika</h3>
     <div class="row">
         {% include 'settings/settings_sidebar.html' %}
 
         <div class="col-md-9">
             <div class="settings-content">
-                <h3>Dane personalne</h3>
-                <p>Tutaj zmieniasz swoje dane itd.</p>
+                <form method="post" action="">
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Nazwa Użytkownika</label>
+                        <input type="text" class="form-control" id="username" name="username" value="{{ user.username }}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-secondary" onclick="window.location.href='{% url 'change_password' %}'">Change Password</button>
+                </form>
             </div>
         </div>
     </div>
