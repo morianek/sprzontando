@@ -43,3 +43,22 @@ class Offer(models.Model):
     def save(self, *args, **kwargs):
         self.clean()
         super().save(*args, **kwargs)
+
+class Review(models.Model):
+
+    Rating = models.IntegerField()
+    Description = models.TextField(blank=True)
+    Reviewer = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='reviews')
+    TimeCreated = models.DateTimeField(auto_now_add=True)
+    Offer = models.ForeignKey(Offer, on_delete=models.CASCADE, related_name='reviews')
+
+    def clean(self):
+        super().clean()
+        if self.Rating < 1 or self.Rating > 5:
+            raise ValidationError({'Rating': 'Ocena musi być z zakresu od 1 do 5.'})
+        if self.Description and len(self.Description) > 256:
+            raise ValidationError({'Description': 'Opis nie może przekraczać 256 znaków.'})
+
+    def save(self, *args, **kwargs):
+        self.clean()
+        super().save(*args, **kwargs)
