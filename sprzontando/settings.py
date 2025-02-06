@@ -63,6 +63,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'authentication',
     'core',
+    'user',
 ]
 
 MIDDLEWARE = [
@@ -80,7 +81,7 @@ ROOT_URLCONF = 'sprzontando.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'authentication', 'templates'), os.path.join(BASE_DIR, 'core', 'templates') , os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'authentication', 'templates'), os.path.join(BASE_DIR, 'core', 'templates') , os.path.join(BASE_DIR, 'templates'), os.path.join(BASE_DIR, 'user', 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -97,6 +98,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
     os.path.join(BASE_DIR, 'authentication', 'static'),
     os.path.join(BASE_DIR, 'core', 'static'),
+    os.path.join(BASE_DIR, 'user', 'static'),
 ]
 
 WSGI_APPLICATION = 'sprzontando.wsgi.application'
