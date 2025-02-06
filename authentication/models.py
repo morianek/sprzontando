@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 
@@ -37,3 +38,17 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+
+class Review(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='user')
+    reviewer = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='reviewer')
+    review = models.TextField(max_length=500)
+    rating = models.IntegerField()
+    TimeCreated = models.DateTimeField(auto_now_add=True)
+
+    def clean(self):
+        if self.rating < 1 or self.rating > 5:
+            raise ValidationError('Ocena musi być z zakresu 1-5')
+
+    def __str__(self):
+        return self.user.email
