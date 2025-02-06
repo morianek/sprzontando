@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Test{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'user/css/styles.css' %}">
+    <script src="{% static 'user/js/scripts.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        {% if not offers %}
+            <h1 class="text-center">Brak ofert</h1>
+
+        {% else %}
+            <h2 class="text-center mb-4">Twoje Oferty:</h2>
+            {% for offer in offers %}
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ offer.Title }}</h5>
+                            <p class="card-text">{{ offer.Description }}</p>
+                            <p class="card-text"><strong>Cena:</strong> {{ offer.Price }} PLN</p>
+                            <p class="card-text"><strong>Lokalizacja:</strong> {{ offer.Location }}</p>
+                            <p class="card-text"><strong>Typ:</strong> {{ offer.get_Type_display }}</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+
+        {% endif %}
+    </div>
+{% endblock %}
