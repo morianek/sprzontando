@@ -1,41 +1,77 @@
+{% load static %}
+<style>
+    .brand-text {
+        font-size: 300%;
+        color: #3783e3;
+        font-family: 'Poppins', sans-serif;
+        font-weight: bold;
+        text-decoration: none;
+        margin-left: 200px;
+    }
+
+    .nav-container {
+        margin-left: 60%;
+    }
+
+    .nav-bordered {
+        border: 2px solid #3783e3;
+        border-radius: 8px;
+        padding: 8px 20px;
+        margin: 5px;
+        font-size: 22px;
+        font-family: 'Poppins', sans-serif;
+        font-weight: bold;
+        color: #3783e3 !important;
+    }
+
+    .nav-bordered:hover {
+        background-color: #3783e3;
+        color: white !important;
+    }
+</style>
+
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="{% url 'main' %}">Sprzątando</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="{% url 'main' %}">Oferty</a>
-        </li>
-      <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="{% url 'ranking' %}">Ranking</a>
-        </li>
-        {% if user.is_superuser %}
-            <li class="nav-item">
-              <a class="nav-link active" href="{% url 'admin:index' %}">Admin</a>
-            </li>
-        {% endif %}
-      </ul>
-    <div class="d-flex">
-      {% if user.is_authenticated %}
-          <div class="dropdown">
-              <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="bi bi-person-circle"></i>
-              </a>
-              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
-                <li><a class="dropdown-item" href="{% url 'user_settings' %}">ustawienia</a></li>
-                <li><a class="dropdown-item" href="{% url 'user_offers' %}">Zobacz Swoje Oferty</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item text-danger" href="{% url 'logout' %}">Wyloguj się</a></li>
-              </ul>
-          </div>
-      {% else %}
-          <a href="{% url 'login' %}" class="btn btn-outline-primary me-2">Zaloguj</a>
-          <a href="{% url 'register' %}" class="btn btn-success">Zarejestruj się</a>
-      {% endif %}
-      </div>
+    <div class="container-fluid">
+        <a class="navbar-brand brand-text" href="{% url 'main' %}">
+            <img src="{% static 'logo.jpg' %}" alt="Logo" height="40">
+            Sprzątando
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav nav-container mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active nav-bordered" aria-current="page" href="{% url 'main' %}">Oferty</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active nav-bordered" href="{% url 'ranking' %}">Ranking</a>
+                </li>
+                {% if user.is_superuser %}
+                <li class="nav-item">
+                    <a class="nav-link active nav-bordered" href="{% url 'admin:index' %}">Admin</a>
+                </li>
+                {% endif %}
+            </ul>
+            <div class="d-flex ms-auto">
+                {% if user.is_authenticated %}
+                <div class="dropdown">
+                    <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-person-circle"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+                        <li><a class="dropdown-item" href="{% url 'user_settings' %}">Ustawienia</a></li>
+                        <li><a class="dropdown-item" href="#">Zobacz Swoje Oferty</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item text-danger" href="{% url 'logout' %}">Wyloguj się</a></li>
+                    </ul>
+                </div>
+                {% else %}
+                <a href="{% url 'login' %}" class="btn btn-outline-primary me-2">Login</a>
+                <a href="{% url 'register' %}" class="btn btn-success">Sign Up</a>
+                {% endif %}
+            </div>
+        </div>
     </div>
-  </div>
 </nav>
