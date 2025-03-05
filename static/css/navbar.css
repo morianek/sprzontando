@@ -1,0 +1,55 @@
+.navbar {
+    max-height: 70px;
+}
+
+.brand-text {
+    font-size: 300%;
+    color: #3783e3;
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+    text-decoration: none;
+    margin-left: 200px;
+}
+
+.nav-container {
+    margin-left: 60%;
+}
+
+.nav-bordered {
+    border: 2px solid #3783e3;
+    border-radius: 8px;
+    padding: 8px 20px;
+    margin: 5px;
+    font-size: 20px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+    color: #3783e3 !important;
+}
+
+.nav-bordered:hover {
+    background-color: #3783e3;
+    color: white !important;
+}
+
+.nav-bordered:active {
+    background-color: #3783e3;
+    color: white !important;
+}
+
+.user-dropdown-btn {
+    background-color: #3783e3;
+    border-color: #3783e3;
+    color: white;
+    padding: 8px 20px;
+    font-size: 20px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+    border-radius: 8px;
+    margin: 5px;
+}
+
+.user-dropdown-btn:hover {
+    background-color: #2a6bbf;
+    border-color: #2a6bbf;
+    color: white;
+}
