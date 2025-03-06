@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Nowa Oferta{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'user/css/user_styles.css' %}">
+    <script src="{% static 'user/js/user_scripts.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Dodaj Nową Ofertę</h2>
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="title">Tytuł</label>
+                <input type="text" class="form-control" id="title" name="title" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Opis</label>
+                <textarea class="form-control" id="description" name="description"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="mprice">Cena</label>
+                <input type="nuber" class="form-control" id="price" name="price" required>
+            </div>
+            <div class="form-group">
+                <label for="expiry_date">Data Wygaśnięcia</label>
+                <input type="date" class="form-control" id="expiry_date" name="expiry_date" required>
+            </div>
+            <div class="form-group">
+                <label for="location">Lokalizacja</label>
+                <input type="text" class="form-control" id="location" name="location" required>
+            </div>
+            <div class="form-group">
+                <label for="state">Województwo</label>
+                <select class="form-control" id="state" name="state" required>
+                    {% for value, label in state_choices %}
+                        <option value="{{ value }}">{{ label }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="type">Typ</label>
+                <select class="form-control" id="type" name="type" required>
+                    {% for value, label in type_choices %}
+                        <option value="{{ value }}">{{ label }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary mt-3">Dodaj Ofertę</button>
+        </form>
+    </div>
+{% endblock %}

@@ -12,9 +12,14 @@
     <div class="row">
         {% if not offers %}
             <h1 class="text-center">Brak ofert</h1>
-
+            <div class="col-12 text-right mb-3">
+                <a href="{% url 'add_offer' %}" class="btn btn-primary">Dodaj Nową Ofertę</a>
+            </div>
         {% else %}
             <h2 class="text-center mb-4">Twoje Oferty:</h2>
+            <div class="col-12 text-right mb-3">
+                <a href="{% url 'add_offer' %}" class="btn btn-primary">Dodaj Nową Ofertę</a>
+            </div>
             {% for offer in offers %}
                 <div class="col-md-6 mb-4">
                     <div class="card h-100">
@@ -28,7 +33,6 @@
                     </div>
                 </div>
             {% endfor %}
-
         {% endif %}
     </div>
 {% endblock %}
