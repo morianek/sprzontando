@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.db.models import Avg, Value, Count
 from django.db.models.functions import Coalesce
 
-from authentication.models import CustomUser, Review
+from authentication.models import CustomUser
 
 from .models import Offer
 from .choices import STATE_CHOICES, TYPE_CHOICES
@@ -25,6 +25,7 @@ def main(request):
         offers = offers.filter(Price__lte=price_max)
     if state_filter:
         offers = offers.filter(State=state_filter)
+
     return render(request, 'core/main.html', {
         'offers': offers,
         'state_choices': STATE_CHOICES,
@@ -36,6 +37,7 @@ def ranking(request):
         avg_rating=Coalesce(Avg('user__rating'), Value(0.0)),
         review_count=Count('user__rating')
     ).filter(avg_rating__gt=0).order_by('-avg_rating')[:5]
+
     return render(request, 'core/ranking.html', {
         'users': best_users,
     })
