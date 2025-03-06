@@ -53,8 +53,9 @@ def add_offer(request):
             offer.save()
 
         except ValidationError as e:
-            error_messages = [msg for sublist in e.message_dict.values() for msg in sublist][0]
-            messages.error(request, error_messages)
+            error_messages = [msg for sublist in e.message_dict.values() for msg in sublist]
+            for error in error_messages:
+                messages.error(request, error)
             return redirect('add_offer')
 
         except ValueError:
