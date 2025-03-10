@@ -6,7 +6,7 @@ from django.contrib import messages
 
 from authentication.models import CustomUser
 
-from .models import Offer, ApplicationForOffer
+from .models import Offer, ApplicationForOffer, OfferReport
 from .choices import STATE_CHOICES, TYPE_CHOICES
 
 # Create your views here.
@@ -100,5 +100,38 @@ def withdraw_application(request, offer_id):
         messages.success(request, 'Zgłoszenie do oferty zostało anulowane')
     except ApplicationForOffer.DoesNotExist:
         messages.error(request, 'Nie zgłosiłeś się do tej oferty')
+
+    return redirect('specific_offer', offer_id=offer_id)
+
+def report_offer(request, offer_id):
+    if not request.user.is_authenticated:
+        return redirect('login')
+
+    if request.method == 'POST':
+        reason = request.POST.get('reason')
+        if not reason:
+            messages.error(request, 'Powód zgłoszenia nie może być pusty')
+            return redirect('specific_offer', offer_id=offer_id)
+
+        if OfferReport.objects.filter(offer_id=offer_id, user=request.user).exists():
+            messages.error(request, 'Już zgłosiłeś tę ofertę')
+            return redirect('specific_offer', offer_id=offer_id)
+
+        try:
+            offer = Offer.objects.get(pk=offer_id)
+
+        except Offer.DoesNotExist:
+            messages.error(request, 'Nie znaleziono oferty o podanym ID')
+            return redirect('main')
+
+        if request.user == offer.Owner:
+            messages.error(request, 'Nie możesz zgłosić swojej oferty')
+            return redirect('specific_offer', offer_id=offer_id)
+
+        try:
+            OfferReport.objects.create(offer=offer, user=request.user, reason=reason)
+            messages.success(request, 'Zgłoszenie zostało wysłane')
+        except IntegrityError:
+            messages.error(request, 'Wystąpił błąd podczas zgłaszania oferty')
 
     return redirect('specific_offer', offer_id=offer_id)
