@@ -51,3 +51,23 @@ class ApplicationForOffer(models.Model):
 
     class Meta:
         unique_together = ('user', 'offer')
+
+class OfferReports(models.Model):
+    offer = models.ForeignKey(Offer, on_delete=models.CASCADE, related_name='offer_reports')
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='user_offer_reports')
+    reason = models.TextField()
+    report_date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'offer')
+
+    def clean(self):
+        super().clean()
+        if not self.reason:
+            raise ValidationError({'reason': 'Powód nie może być pusty.'})
+        if len(self.reason) > 256:
+            raise ValidationError({'reason': 'Powód nie może przekraczać 256 znaków.'})
+
+    def save(self, *args, **kwargs):
+        self.clean()
+        super().save(*args, **kwargs)
