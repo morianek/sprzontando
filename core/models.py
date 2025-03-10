@@ -43,3 +43,11 @@ class Offer(models.Model):
     def save(self, *args, **kwargs):
         self.clean()
         super().save(*args, **kwargs)
+
+class ApplicationForOffer(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='user_applications')
+    offer = models.ForeignKey(Offer, on_delete=models.CASCADE, related_name='offer_applications')
+    application_date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'offer')
