@@ -44,6 +44,9 @@ class Offer(models.Model):
         self.clean()
         super().save(*args, **kwargs)
 
+    def __str__(self):
+        return self.Title
+
 class ApplicationForOffer(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='user_applications')
     offer = models.ForeignKey(Offer, on_delete=models.CASCADE, related_name='offer_applications')
@@ -51,6 +54,9 @@ class ApplicationForOffer(models.Model):
 
     class Meta:
         unique_together = ('user', 'offer')
+
+    def __str__(self):
+        return self.user.email
 
 class OfferReport(models.Model):
     offer = models.ForeignKey(Offer, on_delete=models.CASCADE, related_name='offer_reports')
@@ -71,3 +77,6 @@ class OfferReport(models.Model):
     def save(self, *args, **kwargs):
         self.clean()
         super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.user.email
