@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.core.validators import ValidationError
 from django.contrib import messages
 from datetime import datetime
@@ -65,4 +65,58 @@ def add_offer(request):
         messages.success(request, 'Oferta została dodana')
         return redirect('user_offers')
 
-    return render(request, 'user/add_offer.html', {'type_choices': TYPE_CHOICES, 'state_choices': STATE_CHOICES,})
+    return render(request, 'user/add_offer.html', {
+        'type_choices': TYPE_CHOICES,
+        'state_choices': STATE_CHOICES,
+    })
+
+def edit_specific_offer(request, offer_id):
+    offer = get_object_or_404(Offer, pk=offer_id, Status='active')
+
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        description = request.POST.get('description')
+        price = request.POST.get('price')
+        expiry_date = request.POST.get('expiry_date')
+        location = request.POST.get('location')
+        state = request.POST.get('state')
+        offer_type = request.POST.get('type')
+
+        if not title or not price or not expiry_date or not location or not state or not offer_type:
+            messages.error(request, 'Wszystkie pola są wymagane poza opisem.')
+            return redirect('user_edit_specific_offer', offer_id=offer_id)
+
+
+        try:
+            price = float(price)
+            expiry_date = expiry_date + ' 23:59:59'
+            expiry_date = datetime.strptime(expiry_date, '%Y-%m-%d %H:%M:%S')
+            expiry_date = timezone.make_aware(expiry_date, timezone.get_current_timezone())
+
+            offer.Title = title
+            offer.Description = description
+            offer.Price = price
+            offer.ExpiryDate = expiry_date
+            offer.Location = location
+            offer.State = state
+            offer.Type = offer_type
+            offer.save()
+
+            messages.success(request, 'Oferta została zaktualizowana')
+            return redirect('user_offers')
+
+        except ValueError:
+            messages.error(request, 'Nieprawidłowa cena.')
+            return redirect('user_edit_specific_offer', offer_id=offer_id)
+
+        except ValidationError as e:
+            error_messages = [msg for sublist in e.message_dict.values() for msg in sublist]
+            for error in error_messages:
+                messages.error(request, error)
+            return redirect('user_edit_specific_offer', offer_id=offer_id)
+
+    return render(request, 'user/edit_specific_offer.html', {
+        'offer': offer,
+        'state_choices': STATE_CHOICES,
+        'type_choices': TYPE_CHOICES,
+    })

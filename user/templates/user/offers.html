@@ -22,15 +22,17 @@
             </div>
             {% for offer in offers %}
                 <div class="col-md-6 mb-4">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ offer.Title }}</h5>
-                            <p class="card-text">{{ offer.Description }}</p>
-                            <p class="card-text"><strong>Cena:</strong> {{ offer.Price }} PLN</p>
-                            <p class="card-text"><strong>Lokalizacja:</strong> {{ offer.Location }}</p>
-                            <p class="card-text"><strong>Typ:</strong> {{ offer.get_Type_display }}</p>
+                    <a href="{% url 'user_edit_specific_offer' offer.id %}" class="card-link">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ offer.Title }}</h5>
+                                <p class="card-text">{{ offer.Description }}</p>
+                                <p class="card-text"><strong>Cena:</strong> {{ offer.Price }} PLN</p>
+                                <p class="card-text"><strong>Lokalizacja:</strong> {{ offer.Location }}</p>
+                                <p class="card-text"><strong>Typ:</strong> {{ offer.get_Type_display }}</p>
+                            </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
             {% endfor %}
         {% endif %}

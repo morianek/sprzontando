@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Edytuj Ofertę{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'user/css/user_styles.css' %}">
+    <script src="{% static 'user/js/user_scripts.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Edytuj Ofertę</h2>
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="title">Tytuł</label>
+                <div class="d-flex">
+                    <input type="text" class="form-control" id="title" name="title" value="{{ offer.Title }}">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="description">Opis</label>
+                <div class="d-flex">
+                    <textarea class="form-control" id="description" name="description">{{ offer.Description }}</textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="price">Cena</label>
+                <div class="d-flex">
+                    <input type="number" class="form-control" id="price" name="price" value="{{ offer.Price }}">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="expiry_date">Data Wygaśnięcia</label>
+                <div class="d-flex">
+                    <input type="date" class="form-control" id="expiry_date" name="expiry_date" value="{{ offer.ExpiryDate | date:'Y-m-d' }}">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="location">Lokalizacja</label>
+                <div class="d-flex">
+                    <input type="text" class="form-control" id="location" name="location" value="{{ offer.Location }}">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="state">Województwo</label>
+                <div class="d-flex">
+                    <select class="form-control" id="state" name="state">
+                        {% for value, label in state_choices %}
+                            <option value="{{ value }}" {% if offer.State == value %}selected{% endif %}>{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="type">Typ</label>
+                <div class="d-flex">
+                    <select class="form-control" id="type" name="type">
+                        {% for value, label in type_choices %}
+                            <option value="{{ value }}" {% if offer.Type == value %}selected{% endif %}>{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary mt-3">Zapisz</button>
+        </form>
+    </div>
+{% endblock %}
