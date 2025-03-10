@@ -21,7 +21,18 @@
                     <p class="card-text"><strong>Lokalizacja:</strong> {{ offer.Location }} ({{ offer.State }})</p>
                     <p class="card-text"><strong>Typ:</strong> {{ offer.get_Type_display }}</p>
                     <p class="card-text"><strong>Data utworzenia:</strong> {{ offer.TimeCreated|date:"d.m.Y" }}</p>
-                    <a href="mailto:{{ offer.Owner.email }}" class="btn btn-primary">Skontaktuj się z właścicielem</a>
+                    {% if user.is_authenticated %}
+                        {% if did_user_apply %}
+                            <p class="text-success">Zgłosiłeś się już do wykonania tej oferty</p>
+                        {% else %}
+                            <form method="POST" action="{% url 'apply_for_offer' offer.id %}">
+                                {% csrf_token %}
+                                <button class="btn btn-primary">Zgłoś się do wykonania</button>
+                            </form>
+                        {% endif %}
+                    {% else %}
+                        <p class="text-danger">Aby zgłosić się do wykonania musisz się zalogować</p>
+                    {% endif %}
                 </div>
             </div>
         </div>
