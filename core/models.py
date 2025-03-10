@@ -52,7 +52,7 @@ class ApplicationForOffer(models.Model):
     class Meta:
         unique_together = ('user', 'offer')
 
-class OfferReports(models.Model):
+class OfferReport(models.Model):
     offer = models.ForeignKey(Offer, on_delete=models.CASCADE, related_name='offer_reports')
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='user_offer_reports')
     reason = models.TextField()
