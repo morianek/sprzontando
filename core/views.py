@@ -1,5 +1,5 @@
 from django.db import IntegrityError
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Avg, Value, Count
 from django.db.models.functions import Coalesce
 from django.contrib import messages
@@ -45,12 +45,7 @@ def ranking(request):
     })
 
 def specific_offer(request, offer_id):
-    try:
-        offer = Offer.objects.get(pk=offer_id)
-
-    except Offer.DoesNotExist:
-        messages.error(request, 'Nie znaleziono oferty o podanym ID')
-        return redirect('main')
+    offer = get_object_or_404(Offer, pk=offer_id, Status='active')
 
     did_user_apply = False
     if request.user.is_authenticated:
@@ -66,7 +61,7 @@ def apply_for_offer(request, offer_id):
         return redirect('login')
 
     if request.method == 'POST':
-        offer = Offer.objects.get(pk=offer_id)
+        offer = get_object_or_404(Offer, pk=offer_id, Status='active')
         user = request.user
 
         if not user or not offer:
@@ -117,12 +112,7 @@ def report_offer(request, offer_id):
             messages.error(request, 'Już zgłosiłeś tę ofertę')
             return redirect('specific_offer', offer_id=offer_id)
 
-        try:
-            offer = Offer.objects.get(pk=offer_id)
-
-        except Offer.DoesNotExist:
-            messages.error(request, 'Nie znaleziono oferty o podanym ID')
-            return redirect('main')
+        offer = get_object_or_404(Offer, pk=offer_id, Status='active')
 
         if request.user == offer.Owner:
             messages.error(request, 'Nie możesz zgłosić swojej oferty')
