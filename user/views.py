@@ -71,7 +71,10 @@ def add_offer(request):
     })
 
 def edit_specific_offer(request, offer_id):
-    offer = get_object_or_404(Offer, pk=offer_id, Status='active')
+    if not request.user.is_authenticated:
+        return redirect('login')
+
+    offer = get_object_or_404(Offer, pk=offer_id, Status='active', Owner=request.user)
 
     if request.method == 'POST':
         title = request.POST.get('title')
