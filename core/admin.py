@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Offer, ApplicationForOffer
+from .models import Offer, ApplicationForOffer, OfferReports
 
 class OfferAdmin(admin.ModelAdmin):
     list_display = ('Title', 'Description', 'Owner', 'TimeCreated')
@@ -11,5 +11,12 @@ class ApplicationForOfferAdmin(admin.ModelAdmin):
     search_fields = ('user', 'offer')
     list_filter = ('user', 'offer')
 
+class OfferReportsAdmin(admin.ModelAdmin):
+    list_display = ('user', 'offer', 'reason', 'report_date')
+    search_fields = ('user', 'offer')
+    list_filter = ('user', 'offer')
+
+
 admin.site.register(Offer, OfferAdmin)
 admin.site.register(ApplicationForOffer,  ApplicationForOfferAdmin)
+admin.site.register(OfferReports, OfferReportsAdmin)
