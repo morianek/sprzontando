@@ -89,3 +89,16 @@ def apply_for_offer(request, offer_id):
             messages.error(request, 'Wystąpił błąd podczas zgłaszania się do oferty')
 
     return redirect(specific_offer, offer_id)
+
+def withdraw_application(request, offer_id):
+    if not request.user.is_authenticated:
+        return redirect('login')
+
+    try:
+        application = ApplicationForOffer.objects.get(offer_id=offer_id, user=request.user)
+        application.delete()
+        messages.success(request, 'Zgłoszenie do oferty zostało anulowane')
+    except ApplicationForOffer.DoesNotExist:
+        messages.error(request, 'Nie zgłosiłeś się do tej oferty')
+
+    return redirect('specific_offer', offer_id=offer_id)
