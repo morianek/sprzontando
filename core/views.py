@@ -41,3 +41,10 @@ def ranking(request):
     return render(request, 'core/ranking.html', {
         'users': best_users,
     })
+
+def specific_offer(request, offer_id):
+    offer = Offer.objects.get(pk=offer_id)
+
+    return render(request, 'core/specific_offer.html', {
+        'offer': offer,
+    })
