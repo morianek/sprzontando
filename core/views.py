@@ -12,7 +12,7 @@ from .choices import STATE_CHOICES, TYPE_CHOICES
 # Create your views here.
 
 def main(request):
-    offers = Offer.objects.all().order_by('-TimeCreated')
+    offers = Offer.objects.filter(Status="active").order_by('-TimeCreated')
 
     type_filter = request.GET.get('type')
     price_min = request.GET.get('price_min')
