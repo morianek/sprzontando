@@ -12,7 +12,7 @@ def my_offers(request):
     if not request.user.is_authenticated:
         return redirect('login')
 
-    user_offers = request.user.offers.all()
+    user_offers = request.user.offers.filter(Status='active')
 
     return render(request, 'user/offers.html', {'offers': user_offers})
 
