@@ -41,27 +41,6 @@
     </div>
 </div>
 
-<div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="reportModalLabel">Zgłoś ofertę</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form method="POST" action="{% url 'report_offer' offer.id %}">
-                {% csrf_token %}
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="reportReason">Powód zgłoszenia</label>
-                        <textarea class="form-control" id="reportReason" name="reason" rows="3" required></textarea>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary me-auto" data-bs-dismiss="modal">Anuluj</button>
-                    <button type="submit" class="btn btn-danger">Zgłoś</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+{% include 'core/report_include.html' %}
+
 {% endblock %}
