@@ -24,7 +24,10 @@
                     {% if user.is_authenticated %}
                         {% if did_user_apply %}
                             <p class="text-success">Zgłosiłeś się już do wykonania tej oferty</p>
-                            <a href="{% url 'withdraw_application' offer.id %}" class="btn btn-danger">Anuluj zgłoszenie</a>
+                            <form method="GET" action="{% url 'withdraw_application' offer.id %}">
+                                {% csrf_token %}
+                                <button class="btn btn-danger">Anuluj zgłoszenie</button>
+                            </form>
                         {% else %}
                             <form method="POST" action="{% url 'apply_for_offer' offer.id %}">
                                 {% csrf_token %}
