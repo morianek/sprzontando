@@ -21,8 +21,11 @@ class Offer(models.Model):
 
     def clean(self):
         super().clean()
+        self.Price =  ((self.Price * 100)//1)/100
         if self.Price is None or self.Price <= 0:
             raise ValidationError({'Price': 'Cena musi być większa od zera.'})
+        if self.Price > 99999999.99:
+            raise ValidationError({'Price': 'Cena jest zbyt duża, maksymalna wartość wynosi 99999999.99.'})
         if self.ExpiryDate <= timezone.now():
             raise ValidationError({'ExpiryDate': 'Data wygaśnięcia musi być w przyszłości.'})
         if not self.Title:
