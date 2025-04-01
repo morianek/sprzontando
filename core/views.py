@@ -1,8 +1,10 @@
+from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Avg, Value, Count
 from django.db.models.functions import Coalesce
 from django.contrib import messages
+from django.http import HttpResponseForbidden
 
 from authentication.models import CustomUser
 
@@ -123,5 +125,25 @@ def report_offer(request, offer_id):
             messages.success(request, 'Zgłoszenie zostało wysłane')
         except IntegrityError:
             messages.error(request, 'Wystąpił błąd podczas zgłaszania oferty')
+
+    return redirect('specific_offer', offer_id=offer_id)
+
+def ban_offer(request, offer_id):
+    if not request.user.is_superuser:
+        return HttpResponseForbidden('<h1>Brak wystarczających uprawnień</h1>')
+
+    if request.method == 'POST':
+        offer = get_object_or_404(Offer, pk=offer_id, Status='active')
+        try:
+            offer.Status = 'blocked'
+            offer.save()
+            messages.success(request, 'Oferta została zbanowana')
+            return redirect('main')
+        except IntegrityError:
+            messages.error(request, 'Wystąpił błąd podczas banowania oferty')
+        except ValidationError as e:
+            error_messages = [msg for sublist in e.message_dict.values() for msg in sublist]
+            for error in error_messages:
+                messages.error(request, error)
 
     return redirect('specific_offer', offer_id=offer_id)

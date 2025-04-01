@@ -35,6 +35,12 @@
                             </form>
                         {% endif %}
                         <button type="button" class="btn btn-warning mt-3" data-bs-toggle="modal" data-bs-target="#reportModal">Zgłoś ofertę</button>
+                        {% if user.is_superuser %}
+                            <form method="POST" action="{% url 'ban_offer' offer.id %}" class="mt-3">
+                                {% csrf_token %}
+                                <button class="btn btn-danger">zbanuj ofertę</button>
+                            </form>
+                        {% endif %}
                     {% else %}
                         <p class="text-danger">Aby zgłosić się do wykonania musisz się zalogować</p>
                     {% endif %}
