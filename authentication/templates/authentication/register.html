@@ -9,23 +9,53 @@
 {% endblock %}
 
 {% block content %}
-<h2>register</h2>
+<section class="vh-100 bg-image"
+         style="background: linear-gradient(to right, #141E30, #243B55);">
+    <div class="mask d-flex align-items-center h-100 gradient-custom-3">
+        <div class="container h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+                    <div class="card" style="border-radius: 15px;">
+                        <div class="card-body p-5">
+                            <h2 class="text-uppercase text-center mb-5">Stwórz konto</h2>
 
-<form method="post">
-    {% csrf_token %}
+                            <form>
 
-    <label for="email">email</label>
-    <input type="" name="email" id="email" required>
-    <br>
-    <label for="name">name</label>
-    <input type="text" name="name" id="name" required>
-    <br>
-    <label for="password">Hasło</label>
-    <input type="password" name="password" id="password" required>
-    <br>
-    <label for="password2">Potwierdzenie hasła</label>
-    <input type="password" name="password2" id="password2" required>
-    <br>
-    <button type="submit">register</button>
-</form>
+                                <div data-mdb-input-init class="form-outline mb-4">
+                                    <input type="text" id="form3Example1cg" class="form-control form-control-lg" />
+                                    <label class="form-label" for="form3Example1cg">Nazwa</label>
+                                </div>
+
+                                <div data-mdb-input-init class="form-outline mb-4">
+                                    <input type="email" id="form3Example3cg" class="form-control form-control-lg" />
+                                    <label class="form-label" for="form3Example3cg">Email</label>
+                                </div>
+
+                                <div data-mdb-input-init class="form-outline mb-4">
+                                    <input type="password" id="form3Example4cg" class="form-control form-control-lg" />
+                                    <label class="form-label" for="form3Example4cg">Hasło</label>
+                                </div>
+
+                                <div data-mdb-input-init class="form-outline mb-4">
+                                    <input type="password" id="form3Example4cdg" class="form-control form-control-lg" />
+                                    <label class="form-label" for="form3Example4cdg">Powtórz Hasło</label>
+                                </div>
+
+                                <div class="d-flex justify-content-center">
+                                    <button  type="button" data-mdb-button-init
+                                             data-mdb-ripple-init class="button_text btn btn-success btn-block btn-lg gradient-custom-4">Register</button>
+                                </div>
+
+                                <p class="text-center text-muted mt-5 mb-0">Masz już konto? <a href="#!"
+                                                                                                        class="fw-bold text-body"><u>Zaloguj się</u></a></p>
+
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}
