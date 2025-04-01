@@ -18,6 +18,8 @@ class Offer(models.Model):
     Status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='active')
     Location = models.CharField(max_length=256)
     State = models.CharField(max_length=20, choices=STATE_CHOICES)
+    chosen_user = models.ForeignKey(CustomUser, null=True, blank=True, on_delete=models.SET_NULL,
+                                    related_name='chosen_offers')
 
     def clean(self):
         super().clean()
@@ -42,6 +44,8 @@ class Offer(models.Model):
             raise ValidationError({'Status': 'Nieprawidłowy status.'})
         if self.State not in dict(STATE_CHOICES):
             raise ValidationError({'State': 'Nieprawidłowy stan.'})
+        if self.chosen_user and self.chosen_user == self.Owner:
+            raise ValidationError({'chosen_user': 'Nie możesz wybrać siebie jako użytkownika.'})
 
     def save(self, *args, **kwargs):
         self.clean()

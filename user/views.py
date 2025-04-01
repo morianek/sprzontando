@@ -1,11 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.views.decorators.http import require_POST
 from django.core.validators import ValidationError
 from django.contrib import messages
 from datetime import datetime
 from django.utils import timezone
 
-
-from core.models import Offer
+from authentication.models import CustomUser
+from core.models import Offer, ApplicationForOffer
 from core.choices import TYPE_CHOICES, STATE_CHOICES
 
 def my_offers(request):
@@ -92,7 +93,7 @@ def edit_specific_offer(request, offer_id):
 
         try:
             price = float(price)
-            expiry_date = expiry_date + ' 23:59:59'
+            expiry_date = expiry_date + '23:59:59'
             expiry_date = datetime.strptime(expiry_date, '%Y-%m-%d %H:%M:%S')
             expiry_date = timezone.make_aware(expiry_date, timezone.get_current_timezone())
 
@@ -123,3 +124,35 @@ def edit_specific_offer(request, offer_id):
         'state_choices': STATE_CHOICES,
         'type_choices': TYPE_CHOICES,
     })
+
+def choose_applicants(request, offer_id):
+    if not request.user.is_authenticated:
+        return redirect('login')
+
+    offer = get_object_or_404(Offer, pk=offer_id, Owner=request.user)
+    applicants = ApplicationForOffer.objects.filter(offer=offer).select_related('user')
+
+    if request.method == 'POST':
+        user_id = request.POST.get('user_id')
+        user = get_object_or_404(CustomUser, pk=user_id)
+        if offer.chosen_user:
+            messages.error(request, 'Już wybrano kandydata.')
+            return redirect('user_offers')
+        if user not in [app.user for app in applicants]:
+            messages.error(request, 'Nie można wybrać tego kandydata.')
+            return redirect('user_offers')
+        if user == offer.chosen_user:
+            messages.error(request, 'Ten kandydat został już wybrany.')
+            return redirect('user_offers')
+        try:
+            offer.chosen_user = user
+            offer.save()
+        except ValidationError as e:
+            error_messages = [msg for sublist in e.message_dict.values() for msg in sublist]
+            for error in error_messages:
+                messages.error(request, error)
+            return redirect('user_offers')
+        messages.success(request, 'Wybrano kandydata.')
+        return redirect('user_offers')
+
+    return render(request, 'user/applicants_list.html', {'applicants': applicants, 'offer': offer})

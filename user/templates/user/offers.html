@@ -22,7 +22,6 @@
             </div>
             {% for offer in offers %}
                 <div class="col-md-6 mb-4">
-                    <a href="{% url 'user_edit_specific_offer' offer.id %}" class="card-link">
                         <div class="card h-100">
                             <div class="card-body">
                                 <h5 class="card-title">{{ offer.Title }}</h5>
@@ -30,9 +29,14 @@
                                 <p class="card-text"><strong>Cena:</strong> {{ offer.Price }} PLN</p>
                                 <p class="card-text"><strong>Lokalizacja:</strong> {{ offer.Location }}</p>
                                 <p class="card-text"><strong>Typ:</strong> {{ offer.get_Type_display }}</p>
+                                <button class="btn btn-primary" onclick="window.location.href='{% url 'user_edit_specific_offer' offer.id %}'">edytuj ofertę</button>
+                                {% if offer.chosen_user %}
+                                    <button class="btn btn-secondary" disabled>Już wybrano kandydata</button>
+                                {% else %}
+                                    <button class="btn btn-secondary" onclick="window.location.href='{% url 'choose_applicants' offer.id %}'">Pokaż zgłaszających</button>
+                                {% endif %}
                             </div>
                         </div>
-                    </a>
                 </div>
             {% endfor %}
         {% endif %}

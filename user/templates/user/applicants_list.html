@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Zgłoszenia do oferty{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'user/css/user_styles.css' %}">
+    <script src="{% static 'user/js/user_scripts.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+{% if not applicants %}
+    <h1 class="text-center">Brak zgłoszeń</h1>
+{% else %}
+    <h2 class="text-center mb-4">Zgłoszenia do oferty:</h2>
+{% endif %}
+{% for applicant in applicants %}
+    <div class="applicant-item">
+        <form method="POST">
+            {% csrf_token %}
+            <span>{{ applicant.user.username }}</span>
+            <input type="hidden" name="user_id" value="{{ applicant.user.id }}">
+            <button type="submit" class="btn btn-success">Wybierz</button>
+        </form>
+    </div>
+{% endfor %}
+<br><br>
+<a href="{% url 'user_offers' %}" class="btn btn-primary">Powrót do ofert</a>
+
+{% endblock %}
