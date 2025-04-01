@@ -19,17 +19,17 @@
                         <div class="card-body p-5">
                             <h2 class="text-uppercase text-center mb-5">Logowanie</h2>
 
-                            <form>
-
+                            <form method="POST">
+                                {% csrf_token %}
                                 <div data-mdb-input-init class="form-outline mb-4">
 
-                                    <input type="email" id="form3Example3cg" class="form-control form-control-lg" />
+                                    <input name="email" type="email" id="form3Example3cg" class="form-control form-control-lg" />
                                     <label class="form-label" for="form3Example3cg">Email</label>
                                 </div>
 
                                 <div data-mdb-input-init class="form-outline mb-4">
                                     <div class="d-flex align-items-center">
-                                        <input type="password" id="form3Example4cg" class="form-control form-control-lg" />
+                                        <input name="password" type="password" id="form3Example4cg" class="form-control form-control-lg" />
                                     </div>
                                     <label class="form-label mt-2 d-block" for="form3Example4cg">Hasło</label>
                                 </div>
@@ -38,9 +38,13 @@
 
 
                                 <div class="d-flex justify-content-center">
-                                    <button  type="button" data-mdb-button-init
+                                    <button data-mdb-button-init
                                              data-mdb-ripple-init class="btn btn-success btn-block btn-lg gradient-custom-4">Zaloguj się</button>
                                 </div>
+
+                                <p class="text-center text-muted mt-5 mb-0">Nie posiadasz konta? <a href="{% url 'register' %}"
+                                                                                                        class="fw-bold text-body"><u>Zarejestruj się</u></a></p>
+
 
                             </form>
 
