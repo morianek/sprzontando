@@ -93,7 +93,7 @@ def edit_specific_offer(request, offer_id):
 
         try:
             price = float(price)
-            expiry_date = expiry_date + '23:59:59'
+            expiry_date = expiry_date + ' 23:59:59'
             expiry_date = datetime.strptime(expiry_date, '%Y-%m-%d %H:%M:%S')
             expiry_date = timezone.make_aware(expiry_date, timezone.get_current_timezone())
 
@@ -109,7 +109,8 @@ def edit_specific_offer(request, offer_id):
             messages.success(request, 'Oferta została zaktualizowana')
             return redirect('user_offers')
 
-        except ValueError:
+        except ValueError as e:
+            print(e)
             messages.error(request, 'Nieprawidłowa cena.')
             return redirect('user_edit_specific_offer', offer_id=offer_id)
 
