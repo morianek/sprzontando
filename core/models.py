@@ -47,8 +47,9 @@ class Offer(models.Model):
         if self.chosen_user and self.chosen_user == self.Owner:
             raise ValidationError({'chosen_user': 'Nie możesz wybrać siebie jako użytkownika.'})
 
-    def save(self, *args, **kwargs):
-        self.clean()
+    def save(self, *args,skip_clean=False, **kwargs):
+        if not skip_clean:
+            self.clean()
         super().save(*args, **kwargs)
 
     def __str__(self):

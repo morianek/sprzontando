@@ -167,6 +167,11 @@ LOGGING = {
             'level': 'ERROR',
             'propagate': True,
         },
+        '__main__': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
     },
 }
 
