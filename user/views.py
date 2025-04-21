@@ -157,6 +157,7 @@ def choose_applicants(request, offer_id):
             return redirect('user_offers')
         try:
             offer.chosen_user = user
+            offer.status = 'closed'
             offer.save()
         except ValidationError as e:
             error_messages = [msg for sublist in e.message_dict.values() for msg in sublist]
