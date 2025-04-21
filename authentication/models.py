@@ -47,8 +47,19 @@ class Review(models.Model):
     TimeCreated = models.DateTimeField(auto_now_add=True)
 
     def clean(self):
+        self.rating = int(self.rating)
         if self.rating < 1 or self.rating > 5:
             raise ValidationError('Ocena musi być z zakresu 1-5')
+        if self.user == self.reviewer:
+            raise ValidationError('Nie możesz oceniać samego siebie')
+        if self.review == "":
+            raise ValidationError('Recenzja nie może być pusta')
+        if Review.objects.filter(user=self.user, reviewer=self.reviewer).exists():
+            raise ValidationError('Możesz wystawić tylko jedną recenzję dla tego użytkownika')
+
+    def save(self, *args, **kwargs):
+        self.clean()
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.user.email

@@ -4,7 +4,7 @@ from django.contrib import messages
 from datetime import datetime
 from django.utils import timezone
 
-from authentication.models import CustomUser
+from authentication.models import CustomUser, Review
 from core.models import Offer, ApplicationForOffer
 from core.choices import TYPE_CHOICES, STATE_CHOICES
 
@@ -175,3 +175,25 @@ def user_applications(request):
     offers = Offer.objects.filter(offer_applications__user=request.user).distinct()
 
     return render(request, 'user/user_applications.html', {'offers': offers})
+
+def submit_review(request, user_id):
+    if request.method == 'POST':
+        rating = request.POST.get('rating')
+        comment = request.POST.get('comment', '')
+
+        user = get_object_or_404(CustomUser, pk=user_id)
+
+        try:
+            Review.objects.create(
+                reviewer=request.user,
+                user=user,
+                rating=rating,
+                review=comment
+            )
+            messages.success(request, 'Ocena została przesłana.')
+
+        except ValidationError as e:
+            for error in e.error_list:
+                messages.error(request, error.message)
+
+    return redirect('user_offers')

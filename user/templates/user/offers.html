@@ -40,6 +40,8 @@
                                 <button class="btn btn-primary" onclick="window.location.href='{% url 'user_edit_specific_offer' offer.id %}'">edytuj ofertę</button>
                                 {% if offer.chosen_user %}
                                     <button class="btn btn-secondary" disabled>Już wybrano kandydata</button>
+                                    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#reviewModal-{{ offer.id }}">Oceń wykonawcę</button>
+                                    {% include 'user_includes/review_user_modal.html' with offer=offer %}
                                 {% else %}
                                     <button class="btn btn-secondary" onclick="window.location.href='{% url 'choose_applicants' offer.id %}'">Pokaż zgłaszających</button>
                                 {% endif %}

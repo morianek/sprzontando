@@ -1,0 +1,27 @@
+<div class="modal fade" id="reviewModal-{{ offer.id }}" tabindex="-1" aria-labelledby="reviewModalLabel-{{ offer.id }}" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="reviewModalLabel-{{ offer.id }}">Oceń wykonawcę</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="POST" action="{% url 'submit_review' offer.chosen_user.id %}">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="rating-{{ offer.id }}" class="form-label">Ocena (1-5):</label>
+                        <input type="number" class="form-control" id="rating-{{ offer.id }}" name="rating" min="1" max="5" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="comment-{{ offer.id }}" class="form-label">Komentarz:</label>
+                        <textarea class="form-control" id="comment-{{ offer.id }}" name="comment" rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zamknij</button>
+                    <button type="submit" class="btn btn-primary">Wyślij ocenę</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
