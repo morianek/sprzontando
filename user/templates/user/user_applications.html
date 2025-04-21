@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Twoje zgłoszenia{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'user/css/user_styles.css' %}">
+    <script src="{% static 'user/js/user_scripts.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="text-center mb-4">Twoje zgłoszenia</h1>
+    {% if offers %}
+        <div class="list-group">
+            {% for offer in offers %}
+                <a href="{% url 'specific_offer' offer.id %}" class="list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">{{ offer.Title }}</h5>
+                        <small>{{ offer.ExpiryDate|date:"d-m-Y" }}</small>
+                    </div>
+                    <p class="mb-1">{{ offer.Description|truncatewords:20 }}</p>
+                    <small>
+                        {% if offer.chosen_user %}
+                            {% if offer.chosen_user == request.user %}
+                                <span class="text-success">Zostałeś wybrany!</span>
+                            {% else %}
+                                <span class="text-danger">Ktoś inny został wybrany.</span>
+                            {% endif %}
+                        {% else %}
+                            <span class="text-warning">Czekasz na odpowiedź.</span>
+                        {% endif %}
+                    </small>
+                </a>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-center">Nie aplikowałeś jeszcze na żadne oferty.</p>
+    {% endif %}
+</div>
+{% endblock %}

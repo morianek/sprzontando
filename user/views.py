@@ -167,3 +167,11 @@ def choose_applicants(request, offer_id):
         return redirect('user_offers')
 
     return render(request, 'user/applicants_list.html', {'applicants': applicants, 'offer': offer})
+
+def user_applications(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+
+    offers = Offer.objects.filter(offer_applications__user=request.user).distinct()
+
+    return render(request, 'user/user_applications.html', {'offers': offers})
