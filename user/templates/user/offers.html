@@ -9,6 +9,14 @@
 {% endblock %}
 
 {% block content %}
+    <br>
+    <div class="row mb-3">
+    <div class="col-12 text-center">
+        <a href="?status=Active" class="btn btn-primary">Aktywne</a>
+        <a href="?status=Banned" class="btn btn-danger">Zbanowane</a>
+        <a href="?status=Closed" class="btn btn-secondary">Zakończone</a>
+    </div>
+    </div>
     <div class="row">
         {% if not offers %}
             <h1 class="text-center">Brak ofert</h1>

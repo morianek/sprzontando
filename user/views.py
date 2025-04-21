@@ -1,5 +1,4 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views.decorators.http import require_POST
 from django.core.validators import ValidationError
 from django.contrib import messages
 from datetime import datetime
@@ -13,7 +12,18 @@ def my_offers(request):
     if not request.user.is_authenticated:
         return redirect('login')
 
-    user_offers = request.user.offers.filter(Status='active')
+    status = request.GET.get('status', None)
+    if status is None:
+        user_offers = request.user.offers.all()
+    elif status == 'Active':
+        user_offers = request.user.offers.filter(Status='active')
+    elif status == 'Closed':
+        user_offers = request.user.offers.filter(Status='closed')
+    elif status == 'Banned':
+        user_offers = request.user.offers.filter(Status='blocked')
+    else:
+        messages.error(request, 'Nieprawidłowy status.')
+        return redirect('user_offers')
 
     return render(request, 'user/offers.html', {'offers': user_offers})
 
