@@ -6,7 +6,7 @@ from django.db.models.functions import Coalesce
 from django.contrib import messages
 from django.http import HttpResponseForbidden
 
-from authentication.models import CustomUser
+from authentication.models import CustomUser, Review
 
 from .models import Offer, ApplicationForOffer, OfferReport
 from .choices import STATE_CHOICES, TYPE_CHOICES
@@ -147,3 +147,16 @@ def ban_offer(request, offer_id):
                 messages.error(request, error)
 
     return redirect('specific_offer', offer_id=offer_id)
+
+def specific_user(request, user_id):
+    user = get_object_or_404(CustomUser, pk=user_id)
+    avg_rating = user.get_avg_rating()
+    last_reviews = Review.objects.filter(user=user).order_by('-TimeCreated')[:5]
+    accepted_offers = Offer.objects.filter(chosen_user=user).order_by('-ExpiryDate')[:5]
+
+    return render(request, 'core/specific_user.html', {
+        'user_details': user,
+        'avg_rating': avg_rating,
+        'last_reviews': last_reviews,
+        'accepted_offers': accepted_offers,
+    })

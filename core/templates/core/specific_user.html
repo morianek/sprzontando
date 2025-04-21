@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Strona użytkownika{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'core/css/core_styles.css' %}">
+    <script src="{% static 'core/js/core_scripts.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Profil użytkownika: {{ user_details.username }}</h2>
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Szczegóły użytkownika</h5>
+            <p><strong>Email:</strong> {{ user_details.email }}</p>
+            <p><strong>Średnia ocena:</strong> {{ avg_rating|default:"Brak ocen" }}</p>
+        </div>
+    </div>
+
+    <h3 class="mb-3">ostatnie Recenzje</h3>
+    {% if last_reviews %}
+        <ul class="list-group mb-4">
+            {% for review in last_reviews %}
+            <li class="list-group-item">
+                <strong>Recenzent:</strong> {{ review.reviewer.username }}<br>
+                <strong>Ocena:</strong> {{ review.rating }} / 5<br>
+                <strong>Komentarz:</strong> {{ review.review|default:"Brak komentarza" }}<br>
+                <small class="text-muted">Dodano: {{ review.TimeCreated|date:"d-m-Y H:i" }}</small>
+            </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Brak recenzji dla tego użytkownika.</p>
+    {% endif %}
+
+    <h3 class="mb-3">Ostatnie oferty, w których został zaakceptowany</h3>
+    {% if accepted_offers %}
+        <ul class="list-group">
+            {% for offer in accepted_offers %}
+            <li class="list-group-item">
+                <strong>Tytuł:</strong> {{ offer.Title }}<br>
+                <strong>Opis:</strong> {{ offer.Description|default:"Brak opisu" }}<br>
+                <strong>Cena:</strong> {{ offer.Price }} zł<br>
+                <strong>Lokalizacja:</strong> {{ offer.Location }}
+            </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Brak ofert, w których użytkownik został zaakceptowany.</p>
+    {% endif %}
+</div>
+{% endblock %}

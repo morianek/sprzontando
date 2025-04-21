@@ -143,6 +143,9 @@ def choose_applicants(request, offer_id):
     offer = get_object_or_404(Offer, pk=offer_id, Owner=request.user)
     applicants = ApplicationForOffer.objects.filter(offer=offer).select_related('user')
 
+    for applicant in applicants:
+        applicant.avg_rating = applicant.user.get_avg_rating()
+
     if request.method == 'POST':
         user_id = request.POST.get('user_id')
         user = get_object_or_404(CustomUser, pk=user_id)
