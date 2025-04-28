@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 def unban_users():
     now = timezone.now()
-    users = CustomUser.objects.exclude(ban_until=None)
+    users = CustomUser.objects.all().exclude(ban_until=None)
     logger.info(f"Checking {users.count()} users for unban.")
     for user in users:
         try:

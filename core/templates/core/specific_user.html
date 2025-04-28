@@ -50,5 +50,18 @@
     {% else %}
         <p>Brak ofert, w których użytkownik został zaakceptowany.</p>
     {% endif %}
+    {% if request.user.is_superuser %}
+        <div class="mt-4">
+            <h3>Zbanuj użytkownika</h3>
+            <form method="post" action="{% url 'ban_user' user_details.id %}">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="ban_days" class="form-label">Liczba dni:</label>
+                    <input type="number" id="ban_days" name="ban_days" class="form-control" min="1" max="256" required>
+                </div>
+                <button type="submit" class="btn btn-danger">Zbanuj użytkownika</button>
+            </form>
+        </div>
+    {% endif %}
 </div>
 {% endblock %}

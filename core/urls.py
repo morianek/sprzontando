@@ -10,4 +10,5 @@ urlpatterns = [
     path('offer/<int:offer_id>/report/', views.report_offer, name='report_offer'),
     path('offer/<int:offer_id>/ban', views.ban_offer, name='ban_offer'),
     path('specficic_user/<int:user_id>/', views.specific_user, name='specific_user'),
+    path('ban_user/<int:user_id>/', views.ban_user, name='ban_user'),
 ]

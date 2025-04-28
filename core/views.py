@@ -160,3 +160,34 @@ def specific_user(request, user_id):
         'last_reviews': last_reviews,
         'accepted_offers': accepted_offers,
     })
+
+def ban_user(request, user_id):
+    if not request.user.is_superuser:
+        return HttpResponseForbidden('<h1>Brak wystarczających uprawnień</h1>')
+
+    if request.method == 'POST':
+        user = get_object_or_404(CustomUser, pk=user_id)
+        days = request.POST.get('ban_days')
+        if not days:
+            messages.error(request, 'Liczba dni nie może być pusta')
+            return redirect('specific_user', user_id=user_id)
+        try:
+            days = int(days)
+        except (ValueError, ValueError):
+            messages.error(request, 'Liczba dni musi być liczbą całkowitą')
+            return redirect('specific_user', user_id=user_id)
+        if days < 0 or days > 256:
+            messages.error(request, 'Liczba dni musi być z zakresu 1-256')
+            return redirect('specific_user', user_id=user_id)
+        try:
+            user.ban(days)
+            messages.success(request, f'Użytkownik został zbanowany na {days} dni')
+            return redirect('main')
+        except IntegrityError:
+            messages.error(request, 'Wystąpił błąd podczas banowania użytkownika')
+        except ValidationError as e:
+            error_messages = [msg for sublist in e.message_dict.values() for msg in sublist]
+            for error in error_messages:
+                messages.error(request, error)
+
+    return redirect('specific_user', user_id=user_id)
