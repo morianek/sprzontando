@@ -5,6 +5,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db.models import Avg
 from django.utils.timezone import now
+from django.apps import apps
 
 
 class CustomUserManager(BaseUserManager):
@@ -51,6 +52,11 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         self.ban_until = now() + timedelta(days=duration)
         self.is_active = False
         self.save()
+        offer = apps.get_model('core', 'Offer')
+        offers = offer.objects.filter(Owner=self)
+        for offer in offers:
+            offer.Status = "blocked"
+            offer.save()
 
     def get_avg_rating(self):
         reviews = Review.objects.filter(user=self)
