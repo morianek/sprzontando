@@ -1,7 +1,10 @@
+from datetime import timedelta
+
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db.models import Avg
+from django.utils.timezone import now
 
 
 class CustomUserManager(BaseUserManager):
@@ -32,11 +35,22 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     date_joined = models.DateTimeField(auto_now_add=True)
     description = models.TextField(max_length=500, blank=True)
+    ban_until = models.DateTimeField(null=True, blank=True)
 
     objects = CustomUserManager()
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
+
+    def is_banned(self):
+        return self.ban_until and self.ban_until > now()
+
+    def ban(self, duration):
+        if duration <= 0:
+            raise ValueError("Duration must be greater than 0")
+        self.ban_until = now() + timedelta(days=duration)
+        self.is_active = False
+        self.save()
 
     def get_avg_rating(self):
         reviews = Review.objects.filter(user=self)
