@@ -3,6 +3,9 @@ import django
 import logging
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'sprzontando.settings')
+import sys
+sys.path.append('/var/www/sprzontando')
+
 django.setup()
 
 from django.utils import timezone
