@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Admin{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'administrator/css/admin_styles.css' %}">
+    <script src="{% static 'administrator/js/admin_scripts.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5">
+        <h1 class="mb-4">Użytkownicy z niskimi ocenami</h1>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Imię i nazwisko</th>
+                    <th>Email</th>
+                    <th>Średnia ocena</th>
+                    <th>Akcja</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.avg_rating|floatformat:2 }}</td>
+                    <td>
+                        <a href="{% url 'specific_user' user.id %}" class="btn btn-primary btn-sm">Zobacz profil</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center">Brak użytkowników z niskimi ocenami</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}

@@ -20,8 +20,16 @@
                     <a class="nav-link active nav-bordered" href="{% url 'ranking' %}">Ranking</a>
                 </li>
                 {% if user.is_superuser %}
-                <li class="nav-item">
-                    <a class="nav-link active nav-bordered" href="{% url 'admin:index' %}">Admin</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle active nav-bordered" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Admin
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="adminDropdown">
+                        <li><a class="dropdown-item" href="{% url 'admin:index' %}">Panel Admina Django</a></li>
+                        <li><a class="dropdown-item" href="{% url 'users_with_low_reviews' %}">Użytkownicy z niskimi ocenami</a></li>
+                        <li><a class="dropdown-item" href="">Zgłoszene oferty</a></li>
+                        <li><a class="dropdown-item" href="">Wyszukiwarka użytkowników</a></li>
+                    </ul>
                 </li>
                 {% endif %}
             </ul>
