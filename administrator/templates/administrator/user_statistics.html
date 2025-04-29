@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Admin{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'administrator/css/admin_styles.css' %}">
+    <script src="{% static 'administrator/js/admin_scripts.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+    <br>
+{% if cur_user %}
+    <h2>Statystyki użytkownika: {{ cur_user.username }}</h2>
+    <p>Data założenia konta: {{ stats.date_joined }}</p>
+    <p>Łączna liczba ogłoszeń: {{ stats.total_offers }}</p>
+    <p>Aktywne ogłoszenia: {{ stats.active_offers }}</p>
+    <p>Zamknięte ogłoszenia: {{ stats.closed_offers }}</p>
+    <p>Średnia ocena: {{ stats.avg_rating }}</p>
+    <p>Łączna liczba recenzji: {{ stats.total_reviews }}</p>
+    <a href="{% url 'specific_user' cur_user.id %}" class="btn btn-primary btn-sm">Zobacz profil</a>
+{% else %}
+    {% if request.GET.query %}
+        <h2>Nie znaleziono użytkownika o nazwie/ID: {{ request.GET.query }}</h2>
+    {% endif %}
+{% endif %}
+
+<form method="get">
+    <label for="query">Wyszukaj użytkownika (nazwa/ID):</label>
+    <input type="text" id="query" name="query" value="{{ request.GET.query }}">
+    <button type="submit">Szukaj</button>
+</form>
+{% endblock %}
