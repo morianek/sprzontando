@@ -4,11 +4,19 @@
 
 .brand-text {
     font-size: 300%;
-    color: #3783e3;
     font-family: 'Poppins', sans-serif;
     font-weight: bold;
     text-decoration: none;
     margin-left: 200px;
+    display: inline-block;
+    color: #3783e3 !important;
+    transition: transform 0.2s ease-in-out;
+}
+
+.brand-text:hover {
+    transform: scale(1.05);
+    color: #3783e3 !important;
+    text-decoration: none;
 }
 
 .nav-container {
