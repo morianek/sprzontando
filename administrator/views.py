@@ -1,11 +1,11 @@
 from django.db.models import Avg, Value
 from django.db.models.functions import Coalesce
 from django.http import HttpResponseForbidden
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.contrib import messages
 
 from authentication.models import CustomUser
-from core.models import Offer
+from core.models import Offer, OfferReport
 
 
 def users_with_low_reviews(request):
@@ -45,3 +45,27 @@ def user_statistics(request):
                 "avg_rating": user.get_avg_rating(),
             }
     return render(request, 'administrator/user_statistics.html', {"cur_user": user, "stats": stats})
+
+def reported_offers(request):
+    if not request.user.is_superuser:
+        return HttpResponseForbidden()
+
+    reported_offers = OfferReport.objects.select_related('offer', 'offer__Owner').all().filter(offer__Status='active').order_by('-report_date')
+
+    if request.method == 'POST':
+        action = request.POST.get('action')
+        offer_id = request.POST.get('offer_id')
+        offer = get_object_or_404(Offer, id=offer_id)
+
+        if action == 'ban':
+            offer_reports = OfferReport.objects.filter(offer=offer)
+            offer_reports.delete()
+            offer.Status = 'blocked'
+            offer.save(skip_clean=True)
+        elif action == 'ok':
+            offer_reports = OfferReport.objects.filter(offer=offer)
+            offer_reports.delete()
+            offer.Status = 'active'
+            offer.save(skip_clean=True)
+
+    return render(request, 'administrator/reported_offers.html', {"reported_offers": reported_offers})
