@@ -56,4 +56,11 @@ MODE=production
 SECRET_KEY=twojsekretnyklucz
 DEBUG=False
 ALLOWED_HOSTS=strona.com,drugastrona.com
+EMAIL_HOST = host_email
+EMAIL_PORT = email_port
+EMAIL_HOST_USER = host_email_user
+EMAIL_HOST_PASSWORD = host_email_password
 ```
+
+### joby
+są dwa joby w folderze jobs, oba powinny być uruchamiane codziennie o póŁnocy np. przez crona.
