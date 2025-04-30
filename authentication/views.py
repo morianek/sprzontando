@@ -1,8 +1,13 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.hashers import make_password
+from django.contrib.auth.tokens import default_token_generator
+from django.core.mail import send_mail
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.core.validators import EmailValidator, ValidationError
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 
 from .models import CustomUser
 
@@ -63,14 +68,41 @@ def register_view(request):
                 username=name,
                 password=make_password(password)
             )
+            user.is_active = False
             user.save()
-            messages.success(request, 'Pomyślnie zarejestrowano użytkownika')
-            return redirect('login')
+
+            token = default_token_generator.make_token(user)
+            uid = urlsafe_base64_encode(force_bytes(user.pk))
+            activation_link = request.build_absolute_uri(f'/auth/activate/{uid}/{token}/')
+
+            send_mail(
+                'Aktywacja konta',
+                f'Kliknij w link, aby aktywować konto: {activation_link}',
+                'Sprzontando2001@gmail.com',
+                [email],
+            )
+            return render(request, 'authentication/registration_pending.html')
         except Exception as e:
             messages.error(request, f'Wystąpił błąd: {e}')
             return redirect('register')
 
     return render(request, 'authentication/register.html')
+
+def activate(request, uidb64, token):
+    print("test")
+    try:
+        uid = urlsafe_base64_decode(uidb64).decode()
+        user = CustomUser.objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, CustomUser.DoesNotExist):
+        user = None
+
+    if user is not None and default_token_generator.check_token(user, token):
+        user.is_active = True
+        user.save()
+        messages.success(request, 'Konto zostało aktywowane. Możesz się zalogować.')
+        return redirect('login')
+    else:
+        return HttpResponse('Link aktywacyjny jest nieprawidłowy lub wygasł.')
 
 def log_out(request):
     logout(request)

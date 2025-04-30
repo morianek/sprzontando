@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Login{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'authentication/css/auth_styles.css' %}">
+    <script src="{% static 'authentication/js/auth_scripts.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<h1>Dziękujemy za rejestrację!</h1>
+<p>Na Twój adres e-mail został wysłany link aktywacyjny. Kliknij w niego, aby aktywować swoje konto.</p>
+{% endblock %}
