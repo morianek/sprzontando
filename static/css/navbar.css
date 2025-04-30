@@ -1,14 +1,11 @@
 .navbar {
-    max-height: 70px;
+    background-color: #f8f9fa;
 }
 
 .brand-text {
-    font-size: 300%;
+    font-size: 1.8rem;
     font-family: 'Poppins', sans-serif;
     font-weight: bold;
-    text-decoration: none;
-    margin-left: 200px;
-    display: inline-block;
     color: #3783e3 !important;
     transition: transform 0.2s ease-in-out;
 }
@@ -19,26 +16,19 @@
     text-decoration: none;
 }
 
-.nav-container {
-    margin-left: 60%;
-}
-
 .nav-bordered {
     border: 2px solid #3783e3;
     border-radius: 8px;
-    padding: 8px 20px;
+    padding: 6px 14px;
     margin: 5px;
-    font-size: 20px;
+    font-size: 1rem;
     font-family: 'Poppins', sans-serif;
-    font-weight: bold;
+    font-weight: 500;
     color: #3783e3 !important;
+    background-color: transparent;
 }
 
-.nav-bordered:hover {
-    background-color: #3783e3;
-    color: white !important;
-}
-
+.nav-bordered:hover,
 .nav-bordered:active {
     background-color: #3783e3;
     color: white !important;
@@ -46,18 +36,16 @@
 
 .user-dropdown-btn {
     background-color: #3783e3;
-    border-color: #3783e3;
+    border: none;
     color: white;
-    padding: 8px 20px;
-    font-size: 20px;
+    padding: 6px 14px;
+    font-size: 1rem;
     font-family: 'Poppins', sans-serif;
-    font-weight: bold;
+    font-weight: 500;
     border-radius: 8px;
     margin: 5px;
 }
 
 .user-dropdown-btn:hover {
     background-color: #2a6bbf;
-    border-color: #2a6bbf;
-    color: white;
 }

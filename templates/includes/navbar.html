@@ -1,55 +1,59 @@
 {% load static %}
 <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
 
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
+<nav class="navbar navbar-expand-lg navbar-light bg-body-tertiary shadow-sm">
     <div class="container-fluid">
-        <a class="navbar-brand brand-text" href="{% url 'main' %}">
-            <img src="{% static 'logo.png' %}" alt="Logo" height="110">
+        <a class="navbar-brand brand-text d-flex align-items-center" href="{% url 'main' %}">
+            <img src="{% static 'logo.png' %}" alt="Logo" height="60" class="me-2">
             Sprzątando
         </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+            <ul class="navbar-nav mb-2 mb-lg-0">
                 {% if user.is_superuser %}
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle active nav-bordered" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle nav-bordered" href="#" id="adminDropdown" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
                         Admin
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="adminDropdown">
                         <li><a class="dropdown-item" href="{% url 'admin:index' %}">Panel Admina Django</a></li>
                         <li><a class="dropdown-item" href="{% url 'users_with_low_reviews' %}">Użytkownicy z niskimi ocenami</a></li>
-                        <li><a class="dropdown-item" href="">Zgłoszene oferty</a></li>
-                        <li><a class="dropdown-item" href="">Wyszukiwarka użytkowników</a></li>
+                        <li><a class="dropdown-item" href="#">Zgłoszone oferty</a></li>
+                        <li><a class="dropdown-item" href="#">Wyszukiwarka użytkowników</a></li>
                     </ul>
                 </li>
                 {% endif %}
                 <li class="nav-item">
-                    <a class="nav-link active nav-bordered" aria-current="page" href="{% url 'main' %}">Oferty</a>
+                    <a class="nav-link nav-bordered" href="{% url 'main' %}">Oferty</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active nav-bordered" href="{% url 'ranking' %}">Ranking</a>
+                    <a class="nav-link nav-bordered" href="{% url 'ranking' %}">Ranking</a>
                 </li>
             </ul>
-            <div class="d-flex ms-2">
+            <div class="ms-2 d-flex align-items-center">
                 {% if user.is_authenticated %}
                 <div class="dropdown">
-                    <a class="btn btn-secondary dropdown-toggle user-dropdown-btn" href="#" role="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="btn user-dropdown-btn dropdown-toggle" href="#" role="button" id="profileDropdown"
+                       data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="bi bi-person-circle"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
                         <li><a class="dropdown-item" href="{% url 'user_settings' %}">Ustawienia</a></li>
-                        <li><a class="dropdown-item" href="{% url 'user_offers' %}">Zobacz Swoje Oferty</a></li>
-                        <li><a class="dropdown-item" href="{% url 'user_applications' %}">Zobacz Swoje Zgłoszenia</a></li>
+                        <li><a class="dropdown-item" href="{% url 'user_offers' %}">Twoje Oferty</a></li>
+                        <li><a class="dropdown-item" href="{% url 'user_applications' %}">Twoje Zgłoszenia</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item text-danger" href="{% url 'logout' %}">Wyloguj się</a></li>
                     </ul>
                 </div>
                 {% else %}
-                <a href="{% url 'login' %}" class="nav-link active nav-bordered">Zaloguj</a>
-                <a href="{% url 'register' %}" class="nav-link active nav-bordered">Zarejestruj się</a>
+                <a href="{% url 'login' %}" class="btn nav-bordered me-2">Zaloguj</a>
+                <a href="{% url 'register' %}" class="btn nav-bordered">Zarejestruj</a>
                 {% endif %}
             </div>
         </div>
