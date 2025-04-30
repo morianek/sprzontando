@@ -1,0 +1,17 @@
+form .form-label {
+    font-weight: 600;
+}
+
+.card-title {
+    color: #3783e3;
+    font-weight: bold;
+}
+
+.card-text {
+    font-family: 'Poppins', sans-serif;
+}
+
+a.text-decoration-none:hover .card {
+    transform: scale(1.02);
+    transition: 0.2s ease-in-out;
+}
