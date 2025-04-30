@@ -24,8 +24,8 @@
                     <ul class="dropdown-menu" aria-labelledby="adminDropdown">
                         <li><a class="dropdown-item" href="{% url 'admin:index' %}">Panel Admina Django</a></li>
                         <li><a class="dropdown-item" href="{% url 'users_with_low_reviews' %}">Użytkownicy z niskimi ocenami</a></li>
-                        <li><a class="dropdown-item" href="#">Zgłoszone oferty</a></li>
-                        <li><a class="dropdown-item" href="#">Wyszukiwarka użytkowników</a></li>
+                        <li><a class="dropdown-item" href="{% url 'reported_offers' %}">Zgłoszene oferty</a></li>
+                        <li><a class="dropdown-item" href="{% url 'user_statistics' %}">Wyszukiwarka użytkowników</a></li>
                     </ul>
                 </li>
                 {% endif %}

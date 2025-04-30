@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Zgłoszone Ogłoszenia{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'administrator/css/admin_styles.css' %}">
+    <script src="{% static 'administrator/js/admin_scripts.js' %}"></script>
+{% endblock %}
+
+
+{% block content %}
+<h2>Zgłoszone Ogłoszenia</h2>
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Tytuł</th>
+            <th>Właściciel</th>
+            <th>Powód zgłoszenia</th>
+            <th>Akcje</th>
+            <th>oferta</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for reported in reported_offers %}
+        <tr>
+            <td>{{ reported.offer.id }}</td>
+            <td>{{ reported.offer.title }}</td>
+            <td>{{ reported.offer.Owner.username }}</td>
+            <td>{{ reported.reason }}</td>
+            <td>
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="offer_id" value="{{ reported.offer.id }}">
+                    <button type="submit" name="action" value="ban" class="btn btn-danger">Zbanuj</button>
+                    <button type="submit" name="action" value="ok" class="btn btn-success">Jest OK</button>
+                </form>
+            </td>
+            <td>
+                <a href="{% url 'specific_offer' reported.offer.id %}" class="btn btn-primary">Zobacz ofertę</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
