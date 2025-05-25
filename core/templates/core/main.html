@@ -21,11 +21,11 @@
             </div>
             <div class="col-md-2">
                 <label for="price_min" class="form-label">Cena od</label>
-                <input type="number" class="form-control" id="price_min" name="price_min" placeholder="0" value="{{ request.GET.price_min }}">
+                <input type="number" class="form-control" id="price_min" name="price_min" value="{{ request.GET.price_min|default:'0' }}">
             </div>
             <div class="col-md-2">
                 <label for="price_max" class="form-label">Cena do</label>
-                <input type="number" class="form-control" id="price_max" name="price_max" placeholder="1000" value="{{ request.GET.price_max }}">
+                <input type="number" class="form-control" id="price_max" name="price_max" value="{{ request.GET.price_max|default:'1000'}}">
             </div>
             <div class="col-md-3">
                 <label for="state" class="form-label">Województwo</label>
